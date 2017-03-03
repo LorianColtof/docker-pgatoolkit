@@ -2,6 +2,7 @@ FROM ubuntu:12.04
 # Install required packages
 RUN apt-get update && apt-get upgrade -yq
 RUN apt-get install -yq wget build-essential make tk8.5 libgv-tcl bison flex
+RUN apt-get install -yq sudo
 
 # Create mkdirhier util
 RUN echo 'mkdir -p $@' > /usr/bin/mkdirhier && chmod +x /usr/bin/mkdirhier
@@ -29,6 +30,8 @@ RUN cd /root && cd /root/toolbus-bundle-0.1.0 && ./configure --prefix=/opt/pga1-
 RUN cp /opt/pga1-7/bin/* /opt/pga1-7/
 ENV PATH /opt/pga1-7/bin:$PATH
 RUN adduser pga
+RUN adduser pga sudo
+RUN echo "pga:pga" | chpasswd
 ENV HOME /pga
 ENV PWD /pga
 RUN mkdir /pga
