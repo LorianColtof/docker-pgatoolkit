@@ -28,6 +28,10 @@ RUN cd /root/pga-1.7 && make && make install
 # Install toolbus
 RUN cd /root && cd /root/toolbus-bundle-0.1.0 && ./configure --prefix=/opt/pga1-7 && make && make install
 RUN cp /opt/pga1-7/bin/* /opt/pga1-7/
+
+#Fix bug in PGA toolset
+COPY MSPfunc.pm /opt/pga1-7/lib/perl/
+
 ENV PATH /opt/pga1-7/bin:$PATH
 RUN adduser pga
 RUN adduser pga sudo
