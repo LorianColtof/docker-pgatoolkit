@@ -1,0 +1,63 @@
+--- psf-orig/install_psf	2002-01-08 14:57:48.000000000 +0100
++++ psf/install_psf	2017-03-13 15:09:58.624391766 +0100
+@@ -19,7 +19,7 @@
+ 	read prog_wish <&3
+ 	exec 3<&-
+ else	srcdir=`pwd`
+-	destdir=`dirname "$srcdir"`
++	destdir="/usr/local" 
+ 	x11configdir=`cd /; xmkmf 2>&1 | head -1 | sed 's/.*-I//' |
+ 			 sed 's/ 	]//g'`
+ fi
+@@ -70,12 +70,15 @@
+ done
+ if test "$prog_perl" != "no"; then
+     echo "    checking version of $prog_perl"
++    vl=`$prog_perl -v | grep "This is perl 5"`
++    if test -z "$vl"; then
+     vl=`$prog_perl -v | grep "This is perl, version 5."`
+     if test -z "$vl"; then
+ 	vl=`$prog_perl -v | grep "This is perl, v5."`
+ 	if test -z "$vl"; then
+ 	    prog_perl=no
+ 	fi
++	fi
+     fi
+ fi
+ if test "$prog_perl" = "no"; then
+@@ -160,24 +163,8 @@
+ prog="wish"
+ word="wish version 8.x"
+ echo "searching for $word"
+-prog_wish="no"
+-IFS="${IFS=   }"; save_ifs="$IFS"; IFS="${IFS}:"
+-for dir in $PATH; do
+-    test -z "$dir" && dir=.
+-    if test -f $dir/${prog}; then
+-	prog_wish="$dir/${prog}"
+-	break
+-    fi
+-done
+-if test "$prog_wish" != "no"; then
+-    echo "    checking version of $prog_wish"
+-    echo 'wm withdraw . ; puts "$tcl_version" ; exit' > conftestac-tcltk$$
+-    vl=`$prog_wish conftestac-tcltk$$ | grep "8."`
+-    rm conftestac-tcltk$$
+-    if test -z "$vl"; then
+-        prog_wish=no
+-    fi
+-fi
++prog_wish="yes"
++
+ if test "$prog_wish" = "no"; then
+     echo "    searching alternatives"
+     for dir in $PATH; do
+@@ -313,6 +300,6 @@
+ make Makefiles
+ make depend
+ make all
+-make install
+-make install.man
++sudo make install
++sudo make install.man
+ # make test		# not yet implemented
