@@ -3,7 +3,7 @@ FROM ubuntu:12.04
 RUN apt-get update && apt-get upgrade -yq
 RUN apt-get install -yq wget build-essential make tk8.5 libgv-tcl bison flex
 RUN apt-get install -yq sudo
-RUN apt-get install -yq xutils-dev libxt-dev libxaw7-dev
+RUN apt-get install -yq xutils-dev libxt-dev libxaw7-dev graphviz
 
 # Create mkdirhier util
 RUN echo 'mkdir -p $@' > /usr/bin/mkdirhier && chmod +x /usr/bin/mkdirhier
@@ -43,7 +43,7 @@ COPY MSPfunc.pm /opt/pga1-7/lib/perl/
 # Install PSF dependencies
 RUN cd /root/psf-dep-bundle-0.1.0 && ./configure && make && make install
 
-# Install PSF Toolkit 
+# Install PSF Toolkit
 COPY psf-installer.patch /root/psf/
 RUN cd /root/psf && patch -p1 < psf-installer.patch && echo "y" | ./install_psf
 
